@@ -14,6 +14,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -98,8 +99,16 @@ public class RaceActivity extends SimpleBaseGameActivity {
 
 	private Body mCarBody;
 	private TiledSprite mCar;
+	
+	private Body mCar2Body;
+	private Sprite mCar2;
+	
+	private BitmapTextureAtlas mCar2Texture;
+	private ITextureRegion mCar2TextureRegion;
 
 	private TMXTiledMap mTMXTiledMap;
+	
+	
 	
 	// ===========================================================
 	// Constructors
@@ -117,8 +126,8 @@ public class RaceActivity extends SimpleBaseGameActivity {
 	public EngineOptions onCreateEngineOptions() {
 		DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		CAMERA_HEIGHT = metrics.heightPixels / 2;
-		CAMERA_WIDTH =  metrics.widthPixels / 2;
+		CAMERA_HEIGHT = metrics.heightPixels;
+		CAMERA_WIDTH =  metrics.widthPixels;
 		
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 		this.bCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -130,7 +139,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 	public void onCreateResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-		this.mVehiclesTexture = new BitmapTextureAtlas(this.getTextureManager(), 128, 16, TextureOptions.BILINEAR);
+		this.mVehiclesTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 16, TextureOptions.BILINEAR);
 		this.mVehiclesTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mVehiclesTexture, this, "vehicles.png", 0, 0, 6, 1);
 		this.mVehiclesTexture.load();
 
@@ -147,6 +156,10 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		this.mBoxTexture = new BitmapTextureAtlas(this.getTextureManager(), 32, 32, TextureOptions.BILINEAR);
 		this.mBoxTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBoxTexture, this, "box.png", 0, 0);
 		this.mBoxTexture.load();
+		
+		this.mCar2Texture = new BitmapTextureAtlas(this.getTextureManager(), 36, 72, TextureOptions.BILINEAR);
+		this.mCar2TextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mCar2Texture, this, "green-car-top.png", 0, 0);
+		this.mCar2Texture.load();
 	}
 
 	@Override
@@ -197,8 +210,8 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		this.initOnScreenControls();
 		this.bCamera.setBounds(0, 0, tmxLayer.getHeight(), tmxLayer.getWidth());
 		this.bCamera.setBoundsEnabled(true);
-		this.bCamera.setChaseEntity(mCar);
-		
+		this.bCamera.setChaseEntity(mCar2);
+		this.initObstacles();
 		
 		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
 		final Rectangle ground = new Rectangle(0, tmxLayer.getHeight() - 0, tmxLayer.getWidth(), 2, vertexBufferObjectManager);
@@ -213,6 +226,9 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		PhysicsFactory.createBoxBody(this.mPhysicsWorld, right, BodyType.StaticBody, wallFixtureDef);
 		
 		createMapObjects(this.mTMXTiledMap);
+		
+//		final Sprite mCar2 = new Sprite(40, 40, 36, 72, this.mCar2TextureRegion, this.getVertexBufferObjectManager());
+//		mScene.attachChild(mCar2);
 		
 		this.mScene.registerUpdateHandler(this.mPhysicsWorld);
 
@@ -243,11 +259,31 @@ public class RaceActivity extends SimpleBaseGameActivity {
                 final FixtureDef boxFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
                
                 Body body = PhysicsFactory.createBoxBody(this.mPhysicsWorld, rect, BodyType.StaticBody, boxFixtureDef);
-                body.setUserData("wall");
                
-                rect.setVisible(true);
+               
+                rect.setVisible(false);
                 this.mScene.attachChild(rect);
         }
+	}
+	
+	private void initObstacles() {
+		this.addObstacle(CAMERA_WIDTH / 2, RACETRACK_WIDTH / 2);
+		this.addObstacle(CAMERA_WIDTH / 2, RACETRACK_WIDTH / 2);
+		this.addObstacle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - RACETRACK_WIDTH / 2);
+		this.addObstacle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - RACETRACK_WIDTH / 2);
+	}
+	
+	private void addObstacle(final float pX, final float pY) {
+		final Sprite box = new Sprite(pX, pY, OBSTACLE_SIZE, OBSTACLE_SIZE, this.mBoxTextureRegion, this.getVertexBufferObjectManager());
+
+		final FixtureDef boxFixtureDef = PhysicsFactory.createFixtureDef(0.1f, 0.5f, 0.5f);
+		final Body boxBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, box, BodyType.DynamicBody, boxFixtureDef);
+		boxBody.setLinearDamping(10);
+		boxBody.setAngularDamping(10);
+
+		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(box, boxBody, true, true));
+
+		this.mScene.attachChild(box);
 	}
 
 	@Override
@@ -265,14 +301,14 @@ public class RaceActivity extends SimpleBaseGameActivity {
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 				final Body carBody = RaceActivity.this.mCarBody;
 
-				final Vector2 velocity = Vector2Pool.obtain(pValueX * 10, pValueY * 10);
+				final Vector2 velocity = Vector2Pool.obtain(pValueX * 20, pValueY * 20);
 				carBody.setLinearVelocity(velocity);
 				Vector2Pool.recycle(velocity);
 
 				final float rotationInRad = (float)Math.atan2(-pValueX, pValueY);
 				carBody.setTransform(carBody.getWorldCenter(), rotationInRad);
 
-				RaceActivity.this.mCar.setRotation(MathUtils.radToDeg(rotationInRad));
+				RaceActivity.this.mCar2.setRotation(MathUtils.radToDeg(rotationInRad));
 			}
 
 			@Override
@@ -291,13 +327,16 @@ public class RaceActivity extends SimpleBaseGameActivity {
 	}
 
 	private void initCar() {
-		this.mCar = new TiledSprite(20, 20, CAR_SIZE, CAR_SIZE, this.mVehiclesTextureRegion, this.getVertexBufferObjectManager());
-		this.mCar.setCurrentTileIndex(0);
-
+//		this.mCar = new TiledSprite(20, 20, CAR_SIZE, CAR_SIZE, this.mVehiclesTextureRegion, this.getVertexBufferObjectManager());
+//		this.mCar.setCurrentTileIndex(0);
+		
+		this.mCar2 = new Sprite(80, 80, 36, 72, this.mCar2TextureRegion, this.getVertexBufferObjectManager());
+	
+		
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1.0f);
-		this.mCarBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, this.mCar, BodyType.DynamicBody, carFixtureDef);
+		this.mCarBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, this.mCar2, BodyType.DynamicBody, carFixtureDef);
 
-		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(this.mCar, this.mCarBody, true, false) {
+		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(this.mCar2, this.mCarBody, true, false) {
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
 				super.onUpdate(pSecondsElapsed);
@@ -305,7 +344,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 			}
 		});
 
-		this.mScene.attachChild(this.mCar);
+		this.mScene.attachChild(this.mCar2);
 	}
 
 
