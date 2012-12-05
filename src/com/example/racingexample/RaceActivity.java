@@ -185,7 +185,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		} catch (final TMXLoadException e) {
 			Debug.e(e);
 		}
-		
+		 
 		TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
 		
 		
@@ -324,7 +324,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		analogOnScreenControl.refreshControlKnobPosition();
 
 		this.mScene.setChildScene(analogOnScreenControl);
-	}
+	} 
 
 	private void initCar() {
 //		this.mCar = new TiledSprite(20, 20, CAR_SIZE, CAR_SIZE, this.mVehiclesTextureRegion, this.getVertexBufferObjectManager());

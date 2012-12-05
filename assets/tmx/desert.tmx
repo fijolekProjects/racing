@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="40" height="40" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="150" height="150" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Desert" tilewidth="32" tileheight="32" spacing="3" margin="2">
-  <image source="gfx/desert_tiled.png" width="281" height="211"/>
+  <image source="gfx/desert_tiled.png" width="421" height="421"/>
   <tile id="30">
    <properties>
     <property name="cactus" value="true"/>
    </properties>
   </tile>
  </tileset>
- <layer name="Ground" width="40" height="40">
+ <layer name="Ground" width="150" height="150">
   <data encoding="base64" compression="zlib">
-   eJztmNkOgjAQRas+GCURl0RcEsB9B/7/6xxiCWTS0BZoGSIPJ0BS6OF2gFGfMeYbZAa4wNzwPFWIBH4BAa+u5JdmtQY8YEPAR8fbxHW3wE6DveX7PgBHDU4GXe4lfmfgCVxa9CvLL503UMjTht+VoF+CvLDfm/3q/2PZD9ccPpblheuyCT/Rc3BH+WX7Mj+ca1P53dBx5qObn+n1xZ6YB18/VV4NOI056XdyAAwljBTHZdT1c1neX0yAqQSHj9Odx6no57G8v1gASwkrxXGi80zWnm1CJu5zKHmGFn2o9mYR36q8O4vfn7Z6H9n7POFjbfrFBP1wXVPzq7K+xf7Cll+s4Ufht4GOX0Lcz2Z+bfRm/0hIwKEr4Kyo/TfYr3FPTz2+FSO7ow==
+   eJzt3LERgCAUBUG0/6KtwBDQY4ONGedd6r/HGDcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR7k22f3drO3q7+/wDSu31tU5Vu+sqzPs2FhXfbqisrGu+nRFZWNd9emKysa66tMVlY111acrKhvrqk9XVDbWVZ+uqGysqz5dUdlYV326orKxrvp0RWVjXfXpisrGuurTFZWNddWnK2Zt7D96Zu3s7geztnaniFl7u6sGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAmwdy2a81
   </data>
  </layer>
- <layer name="Obstacles" width="40" height="40">
+ <layer name="Road" width="150" height="150">
   <data encoding="base64" compression="zlib">
-   eJzt1D0KgDAMBtCqS8Uz2Psf0w5OJX+FNEkhw4dQSnyJklZKaUyq4I5nIvkgSw1knPVZu7V9R8/Zcyn6xndW5Fziu//nY+irJa6Pslr6xhnt7KOMK32jIX26PmrvpE9u8/DN2CjfG9ynHc5H3bH2QRauB2vf6Irmg+YHWdNH+6DzKD7JeSSf5x6k/jfJ/Cyc2I7BfFhvq5xYbc6H9aHtnKmJ9bHye8/U4+bsHWp+3rYdfJlMJrNrPpp6oY8=
+   eJzt3Uly4zAMQFFWqjd9kB6cqXO53L+dhXeSYtOCCNBv8fcR8KK4VBbz1Fp7kiRJ7afUGVeKiCtFxJUi4koRcaWIuFJEXCkirvbr7dyvB+t9ZRZc7defcz8erL8rs+CKK65yxxVXXHFVpSVXL+d+J+x14WflKmdLrtbmPrq97q1ccZXdVebnNGvPU7jK7yrz59ORe6zk6l/b5zMYV1ztcT1c5dgDV1xxlc/VUc9pvvubz9Vcro6a33fXyhVXXOWOqxx75IorrrjiKs/1cJVjD1xxxRVXXI2fNVdcccVVlrjKsUeuuOKKK67yXA9XOfbAFVdccbXWqY17Z+N54Fy4ir/WTHHFFVdcVSl6LpHvci79XecqR9FzGT0PrnLNfZZ5cJVr7rPMYxZX17z/namP4HlwJa64qhJX4oqrKl3jKvKMg7XPj1zV7p5n4pFxVTuuxBVXVeJKXHFVJa7EFVdV4kpccVUlrsQVV1XiSlxxVSWuxBVXVeJKXHFVJa7EFVdV4kpccVUlrsQVV1Wa3dWpjTvXc4/eB8yeq9uvpVpV77dc5Y4rrrjiqkpcjXdV7cy8S6/JZs/VHG3tgCuuuOIqU1xxxRVXVeKKK664qhJXXHHFVZVmcfV55TVxxdWtri62uBofV1xxxVWVuOKKK66qNIura6/p0qkd/71/ruZ3dU+9c+GKK6644ipfM7ra8zvhS9/T5uoxXUXPh6u+uXG1PR+u+ubG1fZ8uOqbG1fb8+Gqb25cbc+Hq765cbU9n2qu3trxZxE9L8yNq7lcZTvjgSuuuOKKqzpxxRVXt7l6aWPOMPpIsNfRzezKfWNcXOmonXCliJ1wpYidcKWInXCliJ1wpYidcKWInXCliJ1wpYidcKWInXCliJ1wpYidcKWInXCle/p632Dp+/+n1ndWEVfa2kfvTrjS2r3qnnsWV4o4S5IrcSWuuKoSV+JqHlcjzpLoPd+aqzquRrxDe+QcuOKKq/ld7fFu9tIZxF+dWo7zm2ZxdeQ87537Hr8D2c6pmNVVpbjiKsOsK8+Bq7yzXmrP/xeR6bydUa6qzNPZRn2NcqW540oRcaWItlxJkvRo/QfwjkAE
   </data>
  </layer>
- <objectgroup name="objects" width="40" height="40">
+ <layer name="Water" width="150" height="150">
+  <properties>
+   <property name="Water" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt3ElqwzAAQFFBVlm07qbDNTqPl+kBkjbt/aEyROA68RCIE1t5i4dFsDHCHy0i43kIYQ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACM0mV0diRXI5g/wygq48/oNbodyNv6Hul+FyOYP8N2lZp6ihbRMvqKvqNV9BP9Nvzedn4yix7D/7Z0la8ibDaVNLWyS1fpOAubbekqX2VX29apobqqtqWrfJVd3a+f9766ars2tfUQdJUzXaErpkJX6Iqp0BW6YioO3VVqS1d5G6KrVcf1usqfrsilq5Ku8jZUV137hrrKm67QFVOhK3TFVOgKXTEVuuKQXXXt8/X5D1RXp0tX6Iqp2FdXu+4R6ipvXV21tVFfm+rn6+p0tXXVthalPqrjxRa6Ok1dXTWtRdvefenz/rH3kE9D2dV79BL6ddNk2XF9tann6CPoKmdlV+U3OFJbbevWb4M+61m9Kd/9yFuxPtbbGkK1qfKeuspXURmntu4GUm1KV3m7js6P5GYE8wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgJz9Aaeibp0=
+  </data>
+ </layer>
+ <objectgroup name="Obstacles" width="150" height="150" visible="0">
   <properties>
    <property name="Wall" value="true"/>
   </properties>
-  <object x="216" y="19" width="354" height="77"/>
  </objectgroup>
 </map>
