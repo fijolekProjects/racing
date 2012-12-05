@@ -121,7 +121,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
- 
+
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -161,7 +161,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		this.mCar2TextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mCar2Texture, this, "green-car-top.png", 0, 0);
 		this.mCar2Texture.load();
 	}
- 
+
 	@Override
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
@@ -170,19 +170,26 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		this.mScene.setBackground(new Background(0, 0, 0));
 		
 		try {
-			final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager());
+			final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), new ITMXTilePropertiesListener() {
+				@Override
+				public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
+					/* We are going to count the tiles that have the property "cactus=true" set. */
+					if(pTMXTileProperties.containsTMXProperty("cactus", "true")) {
+						
+					}
+				}
+			});
 			this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
-//			this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/raceTrack.tmx");
-		 	  	
-			 
-		} catch (final TMXLoadException e) { 
-			Debug.e(e); 
-		} 
+				
+			
+		} catch (final TMXLoadException e) {
+			Debug.e(e);
+		}
 		
 		TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
 		
-		  
-		 
+		
+		
 		
 		final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
 		
@@ -191,8 +198,8 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		}
 		
 		
-		 
-		 
+		
+		
 		this.mPhysicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, 0), false, 8, 1);
 
 		
@@ -264,7 +271,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		this.addObstacle(CAMERA_WIDTH / 2, RACETRACK_WIDTH / 2);
 		this.addObstacle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - RACETRACK_WIDTH / 2);
 		this.addObstacle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - RACETRACK_WIDTH / 2);
-	} 
+	}
 	
 	private void addObstacle(final float pX, final float pY) {
 		final Sprite box = new Sprite(pX, pY, OBSTACLE_SIZE, OBSTACLE_SIZE, this.mBoxTextureRegion, this.getVertexBufferObjectManager());
@@ -277,13 +284,13 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(box, boxBody, true, true));
 
 		this.mScene.attachChild(box);
-	} 
- 
+	}
+
 	@Override
 	public void onGameCreated() {
-     
+
 	}
- 
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
