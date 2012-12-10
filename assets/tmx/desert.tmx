@@ -26,9 +26,16 @@
    eJzt3ElqwzAAQFFBVlm07qbDNTqPl+kBkjbt/aEyROA68RCIE1t5i4dFsDHCHy0i43kIYQ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACM0mV0diRXI5g/wygq48/oNbodyNv6Hul+FyOYP8N2lZp6ihbRMvqKvqNV9BP9Nvzedn4yix7D/7Z0la8ibDaVNLWyS1fpOAubbekqX2VX29apobqqtqWrfJVd3a+f9766ars2tfUQdJUzXaErpkJX6Iqp0BW6YioO3VVqS1d5G6KrVcf1usqfrsilq5Ku8jZUV137hrrKm67QFVOhK3TFVOgKXTEVuuKQXXXt8/X5D1RXp0tX6Iqp2FdXu+4R6ipvXV21tVFfm+rn6+p0tXXVthalPqrjxRa6Ok1dXTWtRdvefenz/rH3kE9D2dV79BL6ddNk2XF9tann6CPoKmdlV+U3OFJbbevWb4M+61m9Kd/9yFuxPtbbGkK1qfKeuspXURmntu4GUm1KV3m7js6P5GYE8wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgJz9Aaeibp0=
   </data>
  </layer>
- <objectgroup name="Obstacles" width="150" height="150" visible="0">
+ <objectgroup name="Obstacles" width="150" height="150">
   <properties>
    <property name="Wall" value="true"/>
   </properties>
+ </objectgroup>
+ <objectgroup name="water" width="150" height="150">
+  <properties>
+   <property name="Wall" value="true"/>
+   <property name="water" value="true"/>
+  </properties>
+  <object x="2400" y="2074" width="704" height="1024"/>
  </objectgroup>
 </map>

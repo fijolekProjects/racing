@@ -4,7 +4,6 @@ package com.example.racingexample;
 import java.util.ArrayList;
 
 import org.andengine.engine.camera.BoundCamera;
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -30,8 +29,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.debug.Debug;
-
-import android.util.DisplayMetrics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -65,16 +62,17 @@ public class RaceActivity extends SimpleBaseGameActivity {
 	PhysicsWorld mPhysicsWorld;
 
 	private TMXTiledMap mTMXTiledMap;
-	
+	TMXLayer tmxLayer;
 	
 	
 	
 	// ===========================================================
-	// Constructors
+	// Objects
 	// ===========================================================
 	Car car = new Car();
 	Obstacle obstacle = new Obstacle();
 	ScreenControl screenControl = new ScreenControl();
+	GameCamera gameCamera = new GameCamera();
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -85,15 +83,10 @@ public class RaceActivity extends SimpleBaseGameActivity {
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		DisplayMetrics metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		cameraHeight = metrics.heightPixels;
-		cameraWidth =  metrics.widthPixels;
+		gameCamera.onCreateEngine(this);
 		
-		new Camera(0, 0, cameraWidth, cameraHeight);
-		this.bCamera = new BoundCamera(0, 0, cameraWidth, cameraHeight);
 
-		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(cameraWidth, cameraHeight), this.bCamera);
+		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(gameCamera.width, gameCamera.height), gameCamera.bCamera);
 	}
 
 	@Override
@@ -129,7 +122,7 @@ public class RaceActivity extends SimpleBaseGameActivity {
 			Debug.e(e);
 		}
 		 
-		TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
+		tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
 		
 		
 		
@@ -149,13 +142,11 @@ public class RaceActivity extends SimpleBaseGameActivity {
 		
 		
 		
-		car.initCar(this);
-		obstacle.initBoxes(this);
-		screenControl.initOnScreenControls(this, car);
+		car.initialize(this, gameCamera);
+		obstacle.initializeBoxes(this, gameCamera);
+		screenControl.initialize(this, car, gameCamera);
 		
-		this.bCamera.setBounds(0, 0, tmxLayer.getHeight(), tmxLayer.getWidth());
-		this.bCamera.setBoundsEnabled(true);
-		this.bCamera.setChaseEntity(car.mCarSprite);
+		gameCamera.defineBoundsAndChaseEntity(this, car);
 		
 		
 		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
