@@ -1,7 +1,4 @@
 racingGame
 ======
 
-
-
-I co Kubraq? Łyso?
-======
+[!MyImage](http://i.imgur.com/UEYVwUa.jpg)
