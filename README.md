@@ -1,4 +1,4 @@
 racingGame
 ======
 
-[!MyImage](http://i.imgur.com/UEYVwUa.jpg)
+![My Image](http://i.imgur.com/UEYVwUa.jpg)
